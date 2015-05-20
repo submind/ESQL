@@ -1,0 +1,24 @@
+select cust, prod, avg(x.sale), avg(y.sale)
+from Sales
+group by cust, prod ; x, y
+such that x.cust=cust and x.prod=prod,
+y.cust<>cust and y.prod=prod
+
+#regular
+
+drop view if exists complex_avg;
+create view complex_avg as
+select cust, prod, avg(quant) as avg_q
+from sales
+group by cust,prod;
+
+drop view if exists complex_avg_not;
+create view complex_avg_not as
+select x.cust, y.prod, avg(y.quant) as avg_q
+from complex_avg x, sales y
+where x.cust <> y.cust and x.prod = y.prod
+group by y.prod, x.cust;
+
+select x.cust, x.prod, x.avg_q, y.avg_q
+from complex_avg x, complex_avg_not y
+where x.cust = y.cust and x.prod = y.prod

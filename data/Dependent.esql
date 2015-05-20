@@ -1,0 +1,7 @@
+select=prod,month,count_3_quant
+number=3
+where=year=1997
+groupby=prod,month
+f-vect=avg_1_quant,avg_2_quant,count_3_quant
+suchthat=rs.getString("prod").equals(mft_entry.prod) && mft_entry.month-1==rs.getInt("month"),rs.getString("prod").equals(mft_entry.prod) && mft_entry.month+1==rs.getInt("month"),rs.getString("prod").equals(mft_entry.prod) && mft_entry.month==rs.getInt("month") && rs.getInt("quant")>(mft_entry.amount_1_quant==0?0:mft_entry.sum_1_quant/mft_entry.amount_1_quant) && rs.getInt("quant")<(mft_entry.amount_2_quant==0?0:mft_entry.sum_2_quant/mft_entry.amount_2_quant)
+having=

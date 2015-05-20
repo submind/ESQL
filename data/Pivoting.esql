@@ -1,0 +1,7 @@
+select=cust,avg_1_quant,avg_2_quant,avg_3_quant
+number=3
+where=year=1997
+groupby=cust
+f-vect=avg_1_quant,avg_2_quant,avg_3_quant
+suchthat=rs.getString("cust").equals(mft_entry.cust) && rs.getString("state").equals("NY"),rs.getString("cust").equals(mft_entry.cust) && rs.getString("state").equals("CT"),rs.getString("cust").equals(mft_entry.cust) && rs.getString("state").equals("NJ")
+having=avg_1_quant>avg_2_quant and avg_1_quant>avg_3_quant

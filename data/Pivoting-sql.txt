@@ -1,0 +1,39 @@
+EMF QUERY:
+
+select cust,avg(x.sale),avg(y.sale),avg(z.sale)
+from Sales
+Grouping variables
+where year=1997
+group by cust ; x,y,z
+such that x.cust=cust and x.state=“NY”,
+y.cust=cust and y.state=“CT”,
+z.cust=cust and z.state=“NJ”
+having avg(x.sale)>avg(y.sale) and avg(x.sale)>avg(z.sale)
+
+Regular SQL:
+
+drop view if exists x_avg_q;
+create view x_avg_q as
+select cust, avg(quant) as avg_q
+from sales
+where year=1997 and state='NY'
+group by cust;
+
+drop view if exists y_avg_q;
+create view y_avg_q as
+select cust, avg(quant) as avg_q
+from sales
+where year=1997 and state='CT'
+group by cust;
+
+drop view if exists z_avg_q;
+create view z_avg_q as
+select cust, avg(quant) as avg_q
+from sales
+where year=1997 and state='NJ'
+group by cust;
+
+select x_avg_q.cust, x_avg_q.avg_q, y_avg_q.avg_q, z_avg_q.avg_q
+from x_avg_q, y_avg_q, z_avg_q
+where x_avg_q.cust = y_avg_q.cust and x_avg_q.cust = z_avg_q.cust
+and x_avg_q.avg_q > y_avg_q.avg_q and x_avg_q.avg_q > z_avg_q.avg_q;

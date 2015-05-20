@@ -1,0 +1,7 @@
+select= prod,month,sum_1_quant/sum_2_quant
+number=2
+where=year=1997
+groupby=prod,month
+f-vect=sum_1_quant,sum_2_quant
+suchthat=rs.getString("prod").equals(mft_entry.prod) && rs.getInt("month")==(mft_entry.month),rs.getString("prod").equals(mft_entry.prod)
+having=

@@ -1,0 +1,28 @@
+select prod, month, count(z.*)
+from Sales
+where year=1997
+group by prod,month ; x,y,z
+such that x.prod = prod and x.month = month-1,
+y.prod = prod and y.month = month+1,
+z.prod = prod and z.month = month and
+z.sale>avg(x.sale) and z.sale<avg(y.sale)
+
+#regular
+
+drop view if exists depend_avg;
+create view depend_avg as
+select prod, month, avg(quant) as avg_q
+from sales
+where year=1997
+group by prod, month
+order by prod,month;
+
+select x.prod, x.month, count(x.*)
+from sales x, depend_avg y, depend_avg z
+where x.year=1997 
+and x.prod = y.prod and x.prod=z.prod
+and x.quant < y.avg_q
+and x.month = y.month-1
+and x.quant > z.avg_q
+and x.month = z.month+1
+group by x.prod, x.month

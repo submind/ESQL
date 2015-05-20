@@ -1,0 +1,27 @@
+select prod, sale
+from Sales
+group by prod, sale ; x, y
+such that x.prod=prod
+y.prod=prod and y.sale < sale
+having count(y.prod) = count(x.prod) / 2
+
+#regular
+
+
+drop view if exists medians_count;
+create view medians_count as
+select prod, count(*) as count_q
+from sales
+group by prod;
+
+drop view if exists medians_count_2;
+create view medians_count_2 as
+select x.prod,x.quant, count(y.*) as count_q
+from sales x, sales y
+where x.prod = y.prod and x.quant < y.quant
+group by x.prod, x.quant;
+
+select x.prod, x.quant
+from medians_count_2 x, medians_count y
+where x.prod = y.prod and x.count_q = y.count_q/2
+

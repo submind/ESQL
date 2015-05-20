@@ -1,0 +1,26 @@
+#esql
+select prod, month, sum(x.sale)/sum(y.sale)
+from Sales
+where year=1997
+group by prod,month ; x,y
+such that x.prod = prod and x.month = month,
+y.prod = prod
+
+#regular sql
+drop view if exists hier_sum_quant_month;
+create view hier_sum_quant_month as
+select prod, month, sum(quant) as sum_q
+from sales
+where year=1997
+group by prod, month;
+
+drop view if exists hier_sum_quant_year;
+create view hier_sum_quant_year as
+select prod, sum(quant) as sum_q
+from sales
+where year=1997
+group by prod;
+
+select x.prod, x.month, x.sum_q::float/y.sum_q
+from hier_sum_quant_month x, hier_sum_quant_year y
+where x.prod = y.prod

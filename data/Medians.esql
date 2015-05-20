@@ -1,0 +1,7 @@
+select=prod,quant
+number=2
+where=
+groupby=prod,quant
+f-vect=count_1_quant,count_2_quant
+suchthat=rs.getString("prod").equals(mft_entry.prod),rs.getString("prod").equals(mft_entry.prod) && mft_entry.quant<rs.getInt("quant")
+having=count_2_quant = count_1_quant/2

@@ -1,0 +1,6 @@
+select=cust,month, avg_1_quant,avg_0_quant,avg_2_quant
+number=2
+where=year=1997
+groupby=cust,month
+f-vect=avg_0_quant,avg_1_quant,avg_2_quant
+suchthat=rs.getString("cust").equals(mft_entry.cust) && rs.getInt("month")==mft_entry.month,rs.getString("cust").equals(mft_entry.cust) && rs.getInt("month")<mft_entry.month,rs.getString("cust").equals(mft_entry.cust) && rs.getInt("month")>mft_entry.month

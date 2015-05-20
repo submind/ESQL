@@ -1,0 +1,36 @@
+select cust,month,avg(x.sale),avg(sale),avg(y.sale)
+from Sales
+where year=1997
+group by cust, month ; x, y
+such that x.cust=cust and x.month < month,
+y.cust=cust and y.month > month
+
+#regular
+drop view if exists trends_avg_quant_0;
+create view trends_avg_quant_0 as
+select cust, month, avg(quant) as avg_q
+from sales
+where year=1997
+group by cust,month;
+
+drop view if exists trends_avg_quant_1;
+create view trends_avg_quant_1 as
+select x.cust,y.month, avg(x.quant) as avg_q
+from sales x, trends_avg_quant_0 y
+where x.year=1997 and x.cust=y.cust
+and x.month < y.month
+group by x.cust,y.month
+order by cust;
+
+drop view if exists trends_avg_quant_2;
+create view trends_avg_quant_2 as
+select x.cust,y.month, avg(x.quant) as avg_q
+from sales x, trends_avg_quant_0 y
+where x.year=1997 and x.cust=y.cust
+and x.month > y.month
+group by x.cust,y.month;
+
+select x.cust,x.month, y.avg_q, x.avg_q, z.avg_q
+from trends_avg_quant_0 x, trends_avg_quant_1 y, trends_avg_quant_2 z
+where x.cust = y.cust and x.cust = z.cust
+and x.month = y.month and x.month = z.month

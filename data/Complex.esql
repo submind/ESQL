@@ -1,0 +1,7 @@
+select=cust,prod,avg_1_quant,avg_2_quant
+number=2
+where=
+groupby=cust,prod
+f-vect=avg_1_quant,avg_2_quant
+suchthat=rs.getString("cust").equals(mft_entry.cust) && rs.getString("prod").equals(mft_entry.prod),rs.getString("prod").equals(mft_entry.prod) && !rs.getString("cust").equals(mft_entry.cust)
+having=
